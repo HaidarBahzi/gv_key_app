@@ -1,0 +1,43 @@
+name: gv_key_app
+description: A new Flutter project.
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ">=3.1.5 <4.0.0"
+
+dependencies:
+  connectivity_plus: ^5.0.1
+  flutter:
+    sdk: flutter
+  flutter_carousel_widget: ^2.1.2
+  flutter_smart_dialog: ^4.9.5+1
+  form_validator: ^2.1.1
+  get: ^4.6.6
+  get_storage: ^2.1.1
+  google_fonts: ^6.1.0
+  http: ^1.1.0
+  icons_launcher: ^2.1.5
+  loading_indicator: ^3.1.1
+  persistent_bottom_nav_bar_v2: ^4.2.8
+  pinput: ^3.0.1
+  retry: ^3.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+
+icons_launcher:
+  image_path: "assets/ic_app.png"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
