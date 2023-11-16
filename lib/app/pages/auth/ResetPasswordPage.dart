@@ -43,24 +43,12 @@ class ResetPasswordInit extends GetView<AuthController> {
                   keyboardType: TextInputType.emailAddress,
                   iconForm: const Icon(Icons.email, color: Colors.grey)),
               const SizedBox(height: 30),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.89,
-                height: 40,
-                child: ElevatedButton(
-                  onPressed: () => Get.toNamed('/auth/verify-reset-password'),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.white),
-                    foregroundColor: MaterialStateProperty.all(Colors.black),
-                  ),
-                  child: Text(
-                    'Login',
-                    style: GoogleFonts.poppins(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16),
-                  ),
-                ),
-              ),
+              authButton(
+                  context: context,
+                  controller: () {
+                    controller.resetInitApi();
+                  },
+                  text: 'Send OTP')
             ],
           ),
         ),
@@ -91,11 +79,6 @@ class ResetPasswordPage extends GetView<AuthController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/ic_email_send.png',
-                  height: height * 0.35,
-                ),
-                const SizedBox(height: 5),
                 Text(
                   'Create new password',
                   style: GoogleFonts.poppins(
@@ -107,83 +90,31 @@ class ResetPasswordPage extends GetView<AuthController> {
                 authForm(
                   formController: controller.passwordController,
                   formValidator: controller.passwordValidate,
-                  keyboardType: TextInputType.emailAddress,
-                  hintText: "Enter your email",
+                  keyboardType: TextInputType.visiblePassword,
+                  hintText: "Enter your new password",
                   iconForm: const Icon(
-                    Icons.email,
+                    Icons.lock,
                     color: Colors.grey,
                   ),
                 ),
                 const SizedBox(height: 20),
-                authForm(
-                    formController: controller.confirmPasswordController,
-                    formValidator: controller.passwordValidate,
-                    //TODO: change to password validator and controller
-                    keyboardType: TextInputType.visiblePassword,
-                    hintText: "Enter your password",
-                    iconForm: const Icon(
-                      Icons.lock,
-                      color: Colors.grey,
-                    ),
-                    obscureText: true),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () => Get.toNamed('/auth/init-reset-password'),
-                    child: Text(
-                      'Forgot Password?',
-                      style: GoogleFonts.poppins(color: Colors.white),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.89,
-                  height: 40,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_form.currentState!.validate()) {
-                        print('Password is valid');
-                      } else {
-                        print('nah');
-                      }
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.white),
-                      foregroundColor: MaterialStateProperty.all(Colors.black),
-                    ),
-                    child: Text(
-                      'Login',
-                      style: GoogleFonts.poppins(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16),
-                    ),
-                  ),
-                ),
+                authButton(
+                    context: context,
+                    controller: () => controller.resetPasswordApi(),
+                    text: 'Reset Password'),
                 const SizedBox(
                   height: 10,
                 ),
-                TextButton(
-                  onPressed: () {
-                    Get.toNamed('/auth/register');
-                  },
-                  child: RichText(
-                    text: const TextSpan(
-                      text: "Dont have an account? ",
-                      style: TextStyle(color: Colors.white),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: "Register",
-                          style: TextStyle(
+                authTextButton(
+                    controller: () {
+                      controller.clearController();
+                      Get.toNamed('/auth/login');
+                    },
+                    child: Text('Back to Login',
+                        style: GoogleFonts.poppins(
                             color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16))),
               ],
             ),
           ),

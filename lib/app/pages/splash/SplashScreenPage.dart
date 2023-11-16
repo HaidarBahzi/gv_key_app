@@ -7,8 +7,7 @@ class SplashScreen extends GetView<AuthController> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(
-        const Duration(seconds: 2), () => Get.offAndToNamed('/auth/login'));
+    Future.delayed(const Duration(seconds: 2), () => controller.reloginApi());
 
     return Scaffold(
       body: Center(

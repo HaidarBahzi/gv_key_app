@@ -1,48 +1,55 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 
 //
-Widget buildHeader() {
-  return Column(
-    children: [
-      Image.asset(
-        'image/banner.png',
-        fit: BoxFit.cover,
-        width: double.infinity,
-      ),
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: const Color(0xFF1B1B1B),
-            borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(color: Colors.white.withOpacity(0.5)),
-          ),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.search,
-                  color: Colors.white.withOpacity(0.75),
-                ),
-              ),
-              Expanded(
-                child: TextFormField(
-                  style: TextStyle(color: Colors.white.withOpacity(0.75)),
-                  decoration: InputDecoration(
-                    hintText: 'Search',
-                    hintStyle: TextStyle(color: Colors.white.withOpacity(0.75)),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-            ],
-          ),
+class buildHeader extends StatefulWidget {
+  @override
+  _buildHeaderState createState() => _buildHeaderState();
+}
+
+class _buildHeaderState extends State<buildHeader> {
+  int _imageIndex = 0;
+  List<String> imagePaths = [
+    'assets/banner1.png',
+    'assets/banner2.png',
+    'assets/banner3.png',
+  ];
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 3), (timer) {
+      setState(() {
+        _imageIndex = (_imageIndex + 1) % imagePaths.length;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Image.asset(
+          imagePaths[_imageIndex],
+          fit: BoxFit.cover,
+          width: double.infinity,
         ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
 }
 
 //
@@ -54,35 +61,35 @@ Widget buildCategoryGrid() {
     shrinkWrap: true,
     children: [
       CategoryItem(
-        image: 'image/1.png',
-        text: 'New',
-        icon: Icons.new_releases,
+        image: 'assets/1.png',
+        text: 'Multiplayer',
+        icon: Icons.people,
         onPressed: () {
-          //  Get.toNamed();
+          // Get.toNamed();
         },
       ),
       CategoryItem(
-        image: 'image/2.png',
-        text: 'Special',
-        icon: Icons.local_offer,
+        image: 'assets/2.png',
+        text: 'Singleplayer',
+        icon: Icons.person,
         onPressed: () {
-          // Tambahkan kode yang ingin dijalankan saat Category 2 ditekan
+          // Get.toNamed();
         },
       ),
       CategoryItem(
-        image: 'image/3.png',
-        text: 'Populer',
-        icon: Icons.trending_up,
+        image: 'assets/3.png',
+        text: 'PVP',
+        icon: Icons.sports_soccer,
         onPressed: () {
-          // Tambahkan kode yang ingin dijalankan saat Category 3 ditekan
+          // Get.toNamed();
         },
       ),
       CategoryItem(
-        image: 'image/4.png',
+        image: 'assets/4.png',
         text: 'Free',
-        icon: Icons.free_breakfast,
+        icon: Icons.monetization_on,
         onPressed: () {
-          // Tambahkan kode yang ingin dijalankan saat Category 4 ditekan
+          // Get.toNamed();
         },
       ),
     ],
@@ -157,105 +164,108 @@ class CategoryItem extends StatelessWidget {
   }
 }
 
-//
-Widget buildRecommendationList() {
+//Search
+Widget Search() {
   return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      const Padding(
-        padding: EdgeInsets.only(top: 24, left: 16, bottom: 10),
-        child: Text(
-          'Recommendation',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+      Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFF1B1B1B),
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(color: Colors.white.withOpacity(0.5)),
           ),
-        ),
-      ),
-      ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: games.length,
-        itemBuilder: (context, index) {
-          final game = games[index];
-          final limitedName = game.name.length > 20
-              ? game.name.substring(0, 20) + '...'
-              : game.name;
-
-          return Container(
-            child: ListTile(
-              leading: ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  child: Image.asset(
-                    game.imagePath,
-                    fit: BoxFit.cover,
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.search,
+                  color: Colors.white.withOpacity(0.75),
+                ),
+              ),
+              Expanded(
+                child: TextFormField(
+                  style: TextStyle(color: Colors.white.withOpacity(0.75)),
+                  decoration: InputDecoration(
+                    hintText: 'Search',
+                    hintStyle: TextStyle(color: Colors.white.withOpacity(0.75)),
+                    border: InputBorder.none,
                   ),
                 ),
               ),
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    limitedName,
-                    style: const TextStyle(color: Colors.white),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    "${game.genre}",
-                    style: TextStyle(color: Colors.white.withOpacity(0.8)),
-                  ),
-                  const SizedBox(height: 1),
-                  Text(
-                    "${game.price}",
-                    style: TextStyle(color: Colors.white.withOpacity(0.8)),
-                  ),
-                ],
-              ),
-              contentPadding: const EdgeInsets.only(bottom: 15, left: 15),
-            ),
-          );
-        },
+            ],
+          ),
+        ),
       ),
     ],
   );
 }
 
-class Game {
-  final String name;
-  final String genre;
-  final String price;
-  final String imagePath;
-
-  Game({
-    required this.name,
-    required this.genre,
-    required this.price,
-    required this.imagePath,
-  });
+// Profile
+class ProfileAvatar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 120,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: Color(0xFF1B1B1B),
+      ),
+      child: const Center(
+        child: Icon(
+          Icons.person,
+          size: 80,
+          color: Color(0xFFFFFFFF),
+        ),
+      ),
+    );
+  }
 }
 
-final games = [
-  Game(
-    name: "PUBG",
-    genre: "Open World · FPS",
-    price: "Free",
-    imagePath: 'image/banner.png',
-  ),
-  Game(
-    name: "Stumble Guys",
-    genre: "Parkour · Multiplayer",
-    price: "Free",
-    imagePath: 'image/banner.png',
-  ),
-  Game(
-    name: "Girls' Connect: Idle RPG",
-    genre: "Idle · Gacha",
-    price: "Rp 100.000,00",
-    imagePath: 'image/banner.png',
-  ),
-];
+class CustomButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onPressed;
+
+  const CustomButton({
+    required this.icon,
+    required this.label,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        width: double.infinity,
+        color: Colors.transparent,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Row(
+          children: [
+            Row(
+              children: [
+                Icon(icon, color: Colors.white),
+                const SizedBox(width: 10),
+                Text(
+                  label,
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ],
+            ),
+            const Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(Icons.arrow_forward, color: Colors.white),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

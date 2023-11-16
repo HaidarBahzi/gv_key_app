@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
-void showLoading() {
-  SmartDialog.show(
+showLoading() async {
+  await SmartDialog.show(
       builder: (_) {
         return Container(
-          height: 80,
-          width: 180,
+          height: 200,
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(10),
           ),
           alignment: Alignment.center,
-          child: const Column(
+          child: Column(
             children: [
               LoadingIndicator(
                   indicatorType: Indicator.ballRotate,
@@ -22,8 +22,8 @@ void showLoading() {
                   backgroundColor: Colors.black,
                   pathBackgroundColor: Colors.black),
               Text(
-                'easy custom dialog',
-                style: TextStyle(color: Colors.white),
+                'Loading...',
+                style: GoogleFonts.poppins(color: Colors.white),
               ),
             ],
           ),

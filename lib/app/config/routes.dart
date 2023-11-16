@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:gv_key_app/app/bindings/auth_binding.dart';
+import 'package:gv_key_app/app/pages/BottomNavigation.dart';
 import 'package:gv_key_app/app/pages/auth/LoginPage.dart';
 import 'package:gv_key_app/app/pages/auth/RegisterPage.dart';
 import 'package:gv_key_app/app/pages/auth/ResetPasswordPage.dart';
@@ -46,6 +47,11 @@ final PageRoutes = [
       name: '/auth/verify-reset-password',
       page: () => VerificationResetPage(),
       binding: AuthBinding(),
+      transitionDuration: const Duration(milliseconds: 500),
+      transition: Transition.fadeIn),
+  GetPage(
+      name: '/bottom-navbar',
+      page: () => BottomNavbar(),
       transitionDuration: const Duration(milliseconds: 500),
       transition: Transition.fadeIn),
 ];

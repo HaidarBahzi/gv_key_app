@@ -20,7 +20,7 @@ class RegisterPage extends GetView<AuthController> {
       child: Scaffold(
         body: SingleChildScrollView(
           padding: EdgeInsets.symmetric(
-              vertical: height * 0.15, horizontal: width * 0.05),
+              vertical: height * 0.2, horizontal: width * 0.05),
           child: Form(
             key: _form,
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -54,32 +54,21 @@ class RegisterPage extends GetView<AuthController> {
                 ),
                 const SizedBox(height: 20),
                 authForm(
-                    formController: controller.emailController,
-                    formValidator: controller.emailValidate,
-                    keyboardType: TextInputType.emailAddress,
-                    hintText: "Enter your email",
-                    iconForm: const Icon(
-                      Icons.email,
-                      color: Colors.grey,
-                    ),
-                    obscureText: true),
+                  formController: controller.emailController,
+                  formValidator: controller.emailValidate,
+                  keyboardType: TextInputType.emailAddress,
+                  hintText: "Enter your email",
+                  iconForm: const Icon(
+                    Icons.email,
+                    color: Colors.grey,
+                  ),
+                ),
                 const SizedBox(height: 20),
                 authForm(
                     formController: controller.passwordController,
                     formValidator: controller.passwordValidate,
                     keyboardType: TextInputType.visiblePassword,
                     hintText: "Enter your password",
-                    iconForm: const Icon(
-                      Icons.lock,
-                      color: Colors.grey,
-                    ),
-                    obscureText: true),
-                const SizedBox(height: 20),
-                authForm(
-                    formController: controller.confirmPasswordController,
-                    formValidator: controller.passwordValidate,
-                    keyboardType: TextInputType.visiblePassword,
-                    hintText: "Confirm your password",
                     iconForm: const Icon(
                       Icons.lock,
                       color: Colors.grey,
@@ -92,9 +81,7 @@ class RegisterPage extends GetView<AuthController> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_form.currentState!.validate()) {
-                        print('Password is valid');
-                      } else {
-                        print('nah');
+                        controller.registerApi();
                       }
                     },
                     style: ButtonStyle(
@@ -110,8 +97,9 @@ class RegisterPage extends GetView<AuthController> {
                 const SizedBox(
                   height: 10,
                 ),
-                TextButton(
-                  onPressed: () {
+                authTextButton(
+                  controller: () {
+                    controller.clearController();
                     Get.back();
                   },
                   child: RichText(

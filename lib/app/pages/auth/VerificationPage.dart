@@ -28,7 +28,7 @@ class VerificationAccountPage extends GetView<AuthController> {
             const SizedBox(
               height: 20,
             ),
-            Text('Enter the 4 digit code sent to \n osas@osas.com',
+            Text('Enter the 5 digit code sent to your email',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                   color: Colors.white,
@@ -37,22 +37,26 @@ class VerificationAccountPage extends GetView<AuthController> {
             const SizedBox(
               height: 20,
             ),
-            const Pinput(
+            Pinput(
               defaultPinTheme: defaultPinTheme,
               showCursor: true,
-              // controller: , controller buat ngirim
+              length: 5,
+              controller: controller.otpController,
             ),
-            TextButton(onPressed: () {}, child: const Text('Resend Code')),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text(
-                'Verify Now',
-                style: GoogleFonts.poppins(color: Colors.white),
-              ),
+            SizedBox(
+              height: 50,
             ),
-            TextButton(
-                onPressed: () => Get.offAndToNamed('/auth/login'),
-                child: const Text('Back to Login')),
+            authButton(
+                context: context,
+                controller: () => controller.accountVerifyApi(),
+                text: 'Verify Now'),
+            authTextButton(
+                controller: () => Get.toNamed('/auth/login'),
+                child: Text('Back to Login',
+                    style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16))),
           ],
         ),
       )),
@@ -62,8 +66,6 @@ class VerificationAccountPage extends GetView<AuthController> {
 
 class VerificationResetPage extends GetView<AuthController> {
   VerificationResetPage({super.key});
-
-  // final conttroller = Get.put(VerifyResetPasswordController());
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +77,7 @@ class VerificationResetPage extends GetView<AuthController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Verify your email',
+              'Verify your Reset Request',
               style: GoogleFonts.poppins(
                 color: Colors.white,
                 fontSize: 32,
@@ -85,7 +87,7 @@ class VerificationResetPage extends GetView<AuthController> {
             const SizedBox(
               height: 20,
             ),
-            Text('Enter the 4 digit code sent to \n osas@osas.com',
+            Text('Enter the 5 digit code sent to your email',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                   color: Colors.white,
@@ -94,39 +96,29 @@ class VerificationResetPage extends GetView<AuthController> {
             const SizedBox(
               height: 20,
             ),
-            const Pinput(
+            Pinput(
               defaultPinTheme: defaultPinTheme,
               showCursor: true,
-              // controller: , controller buat ngirim
-            ),
-            TextButton(
-              onPressed: () {},
-              child: const Text("Resend Code",
-                  style: TextStyle(color: Colors.white)),
-            ),
-            const SizedBox(
-              height: 30,
+              length: 5,
+              controller: controller.otpController,
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.89,
-              height: 40,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.white),
-                  foregroundColor: MaterialStateProperty.all(Colors.black),
-                ),
-                child: const Text(
-                  'Verify',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
+              height: 50,
             ),
-            TextButton(
-              onPressed: () => Get.offAndToNamed('/auth/login'),
-              child: const Text("Back to Login",
-                  style: TextStyle(color: Colors.white)),
-            )
+            authButton(
+                context: context,
+                controller: () => controller.resetVerifyApi(),
+                text: 'Verify Now'),
+            authTextButton(
+                controller: () {
+                  controller.clearController();
+                  Get.toNamed('/auth/login');
+                },
+                child: Text('Back to Login',
+                    style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16))),
           ],
         ),
       )),
