@@ -22,6 +22,7 @@ class HomePage extends StatelessWidget {
       body: RefreshIndicator(
         onRefresh: () async {
           await controller.loadData();
+          controller.update();
         },
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
@@ -42,7 +43,8 @@ class HomePage extends StatelessWidget {
                           showIndicator: true,
                           viewportFraction: 1,
                         ),
-                        items: getRandomItems(controller.steamResponModelCtr, 5)
+                        items: getRandomItems(
+                                controller.steamResponseModelCarrouselCtr, 5)
                             .map((game) {
                           return Builder(
                             builder: (BuildContext context) {

@@ -22,7 +22,10 @@ class BottomNavbar extends StatelessWidget {
                 width: 100,
               ),
               IconButton(
-                icon: const Icon(Icons.settings),
+                icon: const Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
                 iconSize: 30,
                 onPressed: () {
                   // Aksi yang ingin Anda jalankan ketika hamburger (menu) ditekan
@@ -33,7 +36,6 @@ class BottomNavbar extends StatelessWidget {
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(4.0),
             child: Container(
-              color: Colors.white.withOpacity(0.3),
               height: 1.0,
             ),
           ),

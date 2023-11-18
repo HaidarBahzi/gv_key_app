@@ -12,7 +12,8 @@ class SplashScreen extends GetView<AuthController> {
     return Scaffold(
       body: Center(
         child: Image.asset(
-          'assets/ic_app.png',
+          'assets/ic_intro.gif',
+          //TODO: edit gif nya biar 1x doang
         ),
       ),
     );

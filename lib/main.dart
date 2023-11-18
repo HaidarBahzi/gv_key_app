@@ -29,7 +29,12 @@ class MainApp extends StatelessWidget {
         initialRoute: '/',
         initialBinding: AuthBinding(),
         getPages: PageRoutes,
-        theme: ThemeData(scaffoldBackgroundColor: const Color(0xff0f0f0f)),
+        theme: ThemeData(
+          scaffoldBackgroundColor: const Color(0xff0f0f0f),
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
+        ),
         debugShowCheckedModeBanner: false,
         builder: FlutterSmartDialog.init(),
       ),

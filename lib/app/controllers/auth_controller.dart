@@ -38,7 +38,6 @@ class AuthController extends GetxController {
     tempOtp = "";
   }
 
-
   final usernameValidate = ValidationBuilder().build();
 
   final emailValidate =

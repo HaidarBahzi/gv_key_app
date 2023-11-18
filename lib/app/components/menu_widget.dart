@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gv_key_app/app/pages/detail/CategoryDetailPage.dart';
 // import 'package:get/get.dart';
 
 //
@@ -65,7 +67,9 @@ Widget buildCategoryGrid() {
         text: 'Multiplayer',
         icon: Icons.people,
         onPressed: () {
-          // Get.toNamed();
+          Get.to(CategoryDetailPage(
+            pass: 'Multi-player',
+          ));
         },
       ),
       CategoryItem(
@@ -73,7 +77,9 @@ Widget buildCategoryGrid() {
         text: 'Singleplayer',
         icon: Icons.person,
         onPressed: () {
-          // Get.toNamed();
+          Get.to(CategoryDetailPage(
+            pass: 'Single-player',
+          ));
         },
       ),
       CategoryItem(
@@ -81,15 +87,19 @@ Widget buildCategoryGrid() {
         text: 'PVP',
         icon: Icons.sports_soccer,
         onPressed: () {
-          // Get.toNamed();
+          Get.to(CategoryDetailPage(
+            pass: 'PvP',
+          ));
         },
       ),
       CategoryItem(
         image: 'assets/4.png',
-        text: 'Free',
+        text: 'Cross Platform',
         icon: Icons.monetization_on,
         onPressed: () {
-          // Get.toNamed();
+          Get.to(CategoryDetailPage(
+            pass: 'Cross-Platform',
+          ));
         },
       ),
     ],
@@ -165,7 +175,8 @@ class CategoryItem extends StatelessWidget {
 }
 
 //Search
-Widget Search() {
+Widget Search(
+    void Function()? onSearch, TextEditingController searchController) {
   return Column(
     children: [
       Padding(
@@ -187,6 +198,7 @@ Widget Search() {
               ),
               Expanded(
                 child: TextFormField(
+                  controller: searchController,
                   style: TextStyle(color: Colors.white.withOpacity(0.75)),
                   decoration: InputDecoration(
                     hintText: 'Search',
@@ -195,6 +207,7 @@ Widget Search() {
                   ),
                 ),
               ),
+              ElevatedButton(onPressed: onSearch, child: Text('Search'))
             ],
           ),
         ),
