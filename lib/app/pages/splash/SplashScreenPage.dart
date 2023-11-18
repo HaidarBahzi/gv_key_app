@@ -7,13 +7,13 @@ class SplashScreen extends GetView<AuthController> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(
-        const Duration(seconds: 2), () => Get.offAndToNamed('/auth/login'));
+    Future.delayed(const Duration(seconds: 2), () => controller.reloginApi());
 
     return Scaffold(
       body: Center(
         child: Image.asset(
-          'assets/ic_app.png',
+          'assets/ic_intro.gif',
+          //TODO: edit gif nya biar 1x doang
         ),
       ),
     );

@@ -5,32 +5,33 @@ import 'package:gv_key_app/app/controllers/action_controller.dart';
 import 'package:gv_key_app/app/pages/detail/GameDetailPage.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class CartPage extends StatelessWidget {
-  CartPage({super.key});
+class CategoryDetailPage extends StatelessWidget {
+  final String pass;
 
   final controller = Get.put(ActionController());
+
+  CategoryDetailPage({super.key, required this.pass});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: RefreshIndicator(
-      onRefresh: () async {
-        await controller.loadDataCart();
-        controller.update();
-      },
-      child: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            Text(
-              'Your Personal Cart',
-              style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold),
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          title: Text(
+            "Game with $pass Category",
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontSize: 14, // Sesuaikan ukuran teks sesuai kebutuhan
             ),
+          ),
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Column(children: [
             FutureBuilder(
-              future: controller.loadDataCart(),
+              future: controller.loadDataCategory(category: pass),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return GetBuilder<ActionController>(
@@ -40,38 +41,38 @@ class CartPage extends StatelessWidget {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount:
-                            controller.steamResponseModelAllCartCtr.length,
+                            controller.steamResponseModelCategoryCtr.length,
                         itemBuilder: (context, index) {
                           final game =
-                              controller.steamResponseModelAllCartCtr[index];
+                              controller.steamResponseModelCategoryCtr[index];
 
                           return GestureDetector(
                             onTap: () {
-                              // Get.to(GameDetailPage(game: game));
+                              Get.to(GameDetailPage(game: game));
                             },
                             child: ListTile(
                               title: Text(
-                                game.productInfoGameName ?? "No Name",
+                                game.gameName ?? "No Name",
                                 style: TextStyle(color: Colors.white),
                               ),
                               subtitle: Text(
-                                (game.productInfoCategory != null &&
-                                        game.productInfoCategory!.length > 30)
-                                    ? "${game.productInfoCategory!.substring(0, 30)}..."
-                                    : game.productInfoCategory ?? "No category",
+                                (game.category != null &&
+                                        game.category!.length > 30)
+                                    ? "${game.category!.substring(0, 30)}..."
+                                    : game.category ?? "No category",
                                 style: TextStyle(
                                   color:
                                       const Color.fromARGB(255, 126, 126, 126),
                                 ),
                               ),
-                              leading: game.productInfoHeaderImageUrl != null
+                              leading: game.headerImageUrl != null
                                   ? SizedBox(
                                       height: 48,
                                       width: 100,
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(8),
                                         child: Image.network(
-                                          game.productInfoHeaderImageUrl!,
+                                          game.headerImageUrl!,
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -84,17 +85,6 @@ class CartPage extends StatelessWidget {
                                         child: Icon(Icons.image_not_supported),
                                       ),
                                     ),
-                              trailing: GestureDetector(
-                                onTap: () {
-                                  controller.deleteCartProduct(
-                                      cart_id: game.cartId);
-                                },
-                                child: Icon(
-                                  Icons.delete,
-                                  color:
-                                      Colors.red, // You can customize the color
-                                ),
-                              ),
                             ),
                           );
                         },
@@ -106,9 +96,7 @@ class CartPage extends StatelessWidget {
                 }
               },
             ),
-          ],
-        ),
-      ),
-    ));
+          ]),
+        ));
   }
 }

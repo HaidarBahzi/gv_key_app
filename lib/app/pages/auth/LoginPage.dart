@@ -58,43 +58,29 @@ class LoginPage extends GetView<AuthController> {
                       color: Colors.grey,
                     ),
                     obscureText: true),
-                Align(
+                authTextButton(
                   alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () => Get.toNamed('/auth/init-reset-password'),
-                    child: Text(
-                      'Forgot Password?',
-                      style: GoogleFonts.poppins(color: Colors.white),
-                    ),
+                  controller: () {
+                    Get.toNamed('/auth/init-reset-password');
+                  },
+                  child: Text(
+                    'Forgot Password?',
+                    style:
+                        GoogleFonts.poppins(color: Colors.white, fontSize: 14),
                   ),
                 ),
                 const SizedBox(height: 20),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.89,
-                  height: 40,
-                  child: ElevatedButton(
-                    onPressed: () {
+                authButton(
+                    context: context,
+                    text: 'Login',
+                    controller: () {
                       if (_form.currentState!.validate()) {
-                        print('Password is valid');
-                      } else {
-                        print('nah');
+                        controller.loginApi();
                       }
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.white),
-                      foregroundColor: MaterialStateProperty.all(Colors.black),
-                    ),
-                    child: Text(
-                      'Login',
-                      style: GoogleFonts.poppins(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16),
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
+                    }),
+                authTextButton(
+                  controller: () {
+                    controller.clearController();
                     Get.toNamed('/auth/register');
                   },
                   child: RichText(

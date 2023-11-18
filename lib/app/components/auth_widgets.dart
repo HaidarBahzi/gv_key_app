@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
 
 Widget authForm({
@@ -53,3 +54,38 @@ const defaultPinTheme = PinTheme(
     ),
   ),
 );
+
+Widget authButton(
+    {required BuildContext context,
+    required void Function()? controller,
+    required String text}) {
+  return SizedBox(
+    width: MediaQuery.of(context).size.width * 0.89,
+    height: 40,
+    child: ElevatedButton(
+      onPressed: controller,
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Colors.white),
+        foregroundColor: MaterialStateProperty.all(Colors.black),
+      ),
+      child: Text(
+        text,
+        style: GoogleFonts.poppins(
+            color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16),
+      ),
+    ),
+  );
+}
+
+Widget authTextButton(
+    {Alignment alignment = Alignment.center,
+    required void Function()? controller,
+    required Widget child}) {
+  return Align(
+    alignment: alignment,
+    child: TextButton(
+      onPressed: controller,
+      child: child,
+    ),
+  );
+}
