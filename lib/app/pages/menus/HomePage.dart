@@ -15,15 +15,72 @@ class HomePage extends StatelessWidget {
     return list.take(count).toList();
   }
 
+  Future<void> _refreshData() async {
+    await controller.loadData();
+  }
+
+  Widget _buildGameList() {
+    return GetBuilder<ActionController>(
+      builder: (controller) => Skeleton.leaf(
+        enabled: controller.enableSkeleton.value,
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: controller.steamResponModelCtr.length,
+          itemBuilder: (context, index) {
+            final game = controller.steamResponModelCtr[index];
+
+            return GestureDetector(
+              onTap: () {
+                Get.to(() =>GameDetailPage(app_id: game.appId!));
+              },
+              child: ListTile(
+                title: Text(
+                  game.gameName ?? "No Name",
+                  style: TextStyle(color: Colors.white),
+                ),
+                subtitle: Text(
+                  (game.category != null && game.category!.length > 30)
+                      ? "${game.category!.substring(0, 30)}..."
+                      : game.category ?? "No category",
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 126, 126, 126),
+                  ),
+                ),
+                leading: game.headerImageUrl != null
+                    ? SizedBox(
+                        height: 48,
+                        width: 100,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            game.headerImageUrl!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      )
+                    : SizedBox(
+                        height: 48,
+                        width: 100,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Icon(Icons.image_not_supported),
+                        ),
+                      ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0F0F0F),
       body: RefreshIndicator(
-        onRefresh: () async {
-          await controller.loadData();
-          controller.update();
-        },
+        onRefresh: _refreshData,
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
@@ -32,33 +89,30 @@ class HomePage extends StatelessWidget {
                 future: controller.loadData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
-                    return GetBuilder<ActionController>(
-                      builder: (controller) => FlutterCarousel(
-                        options: CarouselOptions(
-                          enableInfiniteScroll: true,
-                          autoPlay: true,
-                          aspectRatio: 16 / 9,
-                          floatingIndicator: false,
-                          slideIndicator: CircularSlideIndicator(),
-                          showIndicator: true,
-                          viewportFraction: 1,
-                        ),
-                        items: getRandomItems(
-                                controller.steamResponseModelCarrouselCtr, 5)
-                            .map((game) {
-                          return Builder(
-                            builder: (BuildContext context) {
-                              return Container(
-                                width: double.infinity,
-                                child: Image.network(game.headerImageUrl!),
-                              );
-                            },
-                          );
-                        }).toList(),
+                    return FlutterCarousel(
+                      options: CarouselOptions(
+                        enableInfiniteScroll: true,
+                        autoPlay: true,
+                        aspectRatio: 16 / 9,
+                        floatingIndicator: false,
+                        slideIndicator: CircularSlideIndicator(),
+                        showIndicator: true,
+                        viewportFraction: 1,
                       ),
+                      items: getRandomItems(
+                              controller.steamResponseModelCarrouselCtr, 5)
+                          .map((game) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                              width: double.infinity,
+                              child: Image.network(game.headerImageUrl!),
+                            );
+                          },
+                        );
+                      }).toList(),
                     );
                   } else {
-                    // Handle errors
                     return Text('Error loading data');
                   }
                 },
@@ -84,64 +138,7 @@ class HomePage extends StatelessWidget {
                 future: controller.loadData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
-                    return GetBuilder<ActionController>(
-                      builder: (controller) => Skeleton.leaf(
-                        enabled: controller.enableSkeleton.value,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: controller.steamResponModelCtr.length,
-                          itemBuilder: (context, index) {
-                            final game = controller.steamResponModelCtr[index];
-
-                            return GestureDetector(
-                              onTap: () {
-                                Get.to(GameDetailPage(game: game));
-                              },
-                              child: ListTile(
-                                title: Text(
-                                  game.gameName ?? "No Name",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                subtitle: Text(
-                                  (game.category != null &&
-                                          game.category!.length > 30)
-                                      ? "${game.category!.substring(0, 30)}..."
-                                      : game.category ?? "No category",
-                                  style: TextStyle(
-                                    color: const Color.fromARGB(
-                                        255, 126, 126, 126),
-                                  ),
-                                ),
-                                leading: game.headerImageUrl != null
-                                    ? SizedBox(
-                                        height: 48,
-                                        width: 100,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.network(
-                                            game.headerImageUrl!,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      )
-                                    : SizedBox(
-                                        height: 48,
-                                        width: 100,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child:
-                                              Icon(Icons.image_not_supported),
-                                        ),
-                                      ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    );
+                    return _buildGameList();
                   } else {
                     return Text('Error loading data');
                   }

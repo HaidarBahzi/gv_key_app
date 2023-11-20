@@ -67,9 +67,9 @@ Widget buildCategoryGrid() {
         text: 'Multiplayer',
         icon: Icons.people,
         onPressed: () {
-          Get.to(CategoryDetailPage(
-            pass: 'Multi-player',
-          ));
+          Get.to(() => CategoryDetailPage(
+                pass: 'Multi-player',
+              ));
         },
       ),
       CategoryItem(
@@ -77,9 +77,9 @@ Widget buildCategoryGrid() {
         text: 'Singleplayer',
         icon: Icons.person,
         onPressed: () {
-          Get.to(CategoryDetailPage(
-            pass: 'Single-player',
-          ));
+          Get.to(() => CategoryDetailPage(
+                pass: 'Single-player',
+              ));
         },
       ),
       CategoryItem(
@@ -87,7 +87,7 @@ Widget buildCategoryGrid() {
         text: 'PVP',
         icon: Icons.sports_soccer,
         onPressed: () {
-          Get.to(CategoryDetailPage(
+          Get.to(() =>CategoryDetailPage(
             pass: 'PvP',
           ));
         },
@@ -97,9 +97,9 @@ Widget buildCategoryGrid() {
         text: 'Cross Platform',
         icon: Icons.monetization_on,
         onPressed: () {
-          Get.to(CategoryDetailPage(
-            pass: 'Cross-Platform',
-          ));
+          Get.to(() => CategoryDetailPage(
+                pass: 'Cross-Platform',
+              ));
         },
       ),
     ],
@@ -172,48 +172,6 @@ class CategoryItem extends StatelessWidget {
       ),
     );
   }
-}
-
-//Search
-Widget Search(
-    void Function()? onSearch, TextEditingController searchController) {
-  return Column(
-    children: [
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: const Color(0xFF1B1B1B),
-            borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(color: Colors.white.withOpacity(0.5)),
-          ),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.search,
-                  color: Colors.white.withOpacity(0.75),
-                ),
-              ),
-              Expanded(
-                child: TextFormField(
-                  controller: searchController,
-                  style: TextStyle(color: Colors.white.withOpacity(0.75)),
-                  decoration: InputDecoration(
-                    hintText: 'Search',
-                    hintStyle: TextStyle(color: Colors.white.withOpacity(0.75)),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-              ElevatedButton(onPressed: onSearch, child: Text('Search'))
-            ],
-          ),
-        ),
-      ),
-    ],
-  );
 }
 
 // Profile
