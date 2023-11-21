@@ -3,26 +3,26 @@ import 'package:get/get.dart';
 import 'package:gv_key_app/app/components/menu_widget.dart';
 import 'package:gv_key_app/app/controllers/action_controller.dart';
 import 'package:gv_key_app/app/pages/detail/GameDetailPage.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class SearchPage extends StatelessWidget {
   SearchPage({super.key});
 
   final controller = Get.put(ActionController());
-  final TextEditingController searchController = TextEditingController();
 
-  SeachFunction() async {
-    await controller.loadDataName(name: searchController.text);
+  void performSearch() {
+    final searchText = controller.searchController.text;
+    if (searchText.isNotEmpty) {
+      controller.loadDataName(name: searchText);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0F0F0F),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Search(() => SeachFunction(), searchController),
+            SearchForm(controller.searchController),
             Obx(
               () => ListView.builder(
                 shrinkWrap: true,
@@ -33,7 +33,7 @@ class SearchPage extends StatelessWidget {
 
                   return GestureDetector(
                     onTap: () {
-                      Get.to(GameDetailPage(game: game));
+                      Get.to(() => GameDetailPage(app_id: game.appId!));
                     },
                     child: ListTile(
                       title: Text(
@@ -77,6 +77,54 @@ class SearchPage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget SearchForm(
+    TextEditingController searchController,
+  ) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFF1B1B1B),
+              borderRadius: BorderRadius.circular(8.0),
+              border: Border.all(color: Colors.white.withOpacity(0.5)),
+            ),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                ),
+                Expanded(
+                  child: TextFormField(
+                    controller: searchController,
+                    style: TextStyle(color: Colors.white.withOpacity(0.75)),
+                    decoration: InputDecoration(
+                      hintText: 'Search',
+                      hintStyle:
+                          TextStyle(color: Colors.white.withOpacity(0.75)),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                    onPressed: performSearch,
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      elevation: 0,
+                    ),
+                    child: Icon(
+                      Icons.search,
+                      color: Colors.white.withOpacity(0.75),
+                    )),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
 
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:gv_key_app/app/models/CartModel.dart';
 import 'package:gv_key_app/app/models/ProductModel.dart';
+import 'package:gv_key_app/app/models/UserProfileModel.dart';
 import 'package:http/http.dart' as http;
 
 final localStorage = GetStorage();
@@ -24,6 +26,10 @@ class ActionController extends GetxController {
   RxList<Games> steamResponseModelCartCtr = <Games>[].obs;
 
   RxList<Cart> steamResponseModelAllCartCtr = <Cart>[].obs;
+
+  RxList<Userprofile> profileResponseModelCtr = <Userprofile>[].obs;
+
+  final TextEditingController searchController = TextEditingController();
 
   RxBool enableSkeleton = true.obs;
 
@@ -82,6 +88,37 @@ class ActionController extends GetxController {
 
       if (response.statusCode == 200) {
         steamResponseModelSearchCtr.assignAll(gamesFromJson(response.body));
+      } else {
+        print("status code : " +
+            response.statusCode.toString() +
+            " gagal " +
+            response.body);
+      }
+    } catch (e) {
+      print("error : " + e.toString());
+    }
+  }
+
+  loadDetailGame({required int app_id}) async {
+    try {
+      Map body = {'email': localStorage.read('userEmail')};
+
+      SmartDialog.showLoading();
+
+      final response = await http.post(
+          Uri.parse(
+              "https://knowing-fit-goose.ngrok-free.app/api/product/search/app_id=$app_id"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ${localStorage.read('userToken')}',
+          },
+          body: jsonEncode(body));
+
+      Future.delayed(Duration(seconds: 2), () => SmartDialog.dismiss());
+
+      if (response.statusCode == 200) {
+        steamResponModelCtr.assignAll(gamesFromJson(response.body));
       } else {
         print("status code : " +
             response.statusCode.toString() +
@@ -216,6 +253,38 @@ class ActionController extends GetxController {
         steamResponseModelCarrouselCtr.assignAll(gamesFromJson(response.body));
 
         enableSkeleton.value = false;
+      } else {
+        print("status code : " +
+            response.statusCode.toString() +
+            " gagal " +
+            response.body);
+      }
+    } catch (e) {
+      print("error : " + e.toString());
+    }
+  }
+
+// Profile
+  loadUserProfile() async {
+    try {
+      Map body = {'email': localStorage.read('userEmail')};
+
+      SmartDialog.showLoading();
+
+      final response = await http.post(
+          Uri.parse(
+              "https://knowing-fit-goose.ngrok-free.app/api/menu/get-profile"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ${localStorage.read('userToken')}',
+          },
+          body: jsonEncode(body));
+
+      Future.delayed(Duration(seconds: 2), () => SmartDialog.dismiss());
+
+      if (response.statusCode == 200) {
+        profileResponseModelCtr.assignAll(userprofileFromJson(response.body));
       } else {
         print("status code : " +
             response.statusCode.toString() +

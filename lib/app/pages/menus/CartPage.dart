@@ -47,7 +47,8 @@ class CartPage extends StatelessWidget {
 
                           return GestureDetector(
                             onTap: () {
-                              // Get.to(GameDetailPage(game: game));
+                              Get.to(() => GameDetailPage(
+                                  app_id: game.productInfoAppId));
                             },
                             child: ListTile(
                               title: Text(
@@ -88,6 +89,10 @@ class CartPage extends StatelessWidget {
                                 onTap: () {
                                   controller.deleteCartProduct(
                                       cart_id: game.cartId);
+
+                                  controller.loadDataCart();
+
+                                  controller.update();
                                 },
                                 child: Icon(
                                   Icons.delete,

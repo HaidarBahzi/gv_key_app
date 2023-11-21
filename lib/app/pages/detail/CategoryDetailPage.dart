@@ -48,7 +48,7 @@ class CategoryDetailPage extends StatelessWidget {
 
                           return GestureDetector(
                             onTap: () {
-                              Get.to(GameDetailPage(game: game));
+                              Get.to(() => GameDetailPage(app_id: game.appId!));
                             },
                             child: ListTile(
                               title: Text(
