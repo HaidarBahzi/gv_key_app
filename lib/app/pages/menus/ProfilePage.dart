@@ -19,54 +19,76 @@ class ProfilePage extends StatelessWidget {
           future: controller.loadUserProfile(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              final profile = controller.profileResponseModelCtr.first;
+              if (controller.profileResponseModelCtr.isNotEmpty) {
+                final profile = controller.profileResponseModelCtr.first;
 
-              return Container(
-                margin: const EdgeInsets.only(bottom: 75, top: 75),
-                child: Column(
-                  children: [
-                    ProfileAvatar(),
-                    const SizedBox(height: 20),
-                    Text(
-                      profile.userName,
-                      style: TextStyle(color: Colors.white, fontSize: 24),
-                    ),
-                    Text(
-                      profile.userEmail,
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                    const SizedBox(height: 40),
-                    CustomButton(
-                      icon: Icons.settings,
-                      label: 'Account Settings',
-                      onPressed: () {},
-                    ),
-                    const SizedBox(height: 10),
-                    CustomButton(
-                      icon: Icons.public,
-                      label: 'Language',
-                      onPressed: () {},
-                    ),
-                    const SizedBox(height: 10),
-                    CustomButton(
-                      icon: Icons.policy,
-                      label: 'Privacy Policy',
-                      onPressed: () {
-                        Get.to(PrivacyPolicyPage());
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    CustomButton(
-                      icon: Icons.logout,
-                      label: 'Log Out',
-                      onPressed: () {
-                        localStorage.erase();
-                        Get.offAllNamed('/auth/login');
-                      },
-                    ),
-                  ],
-                ),
-              );
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 75, top: 75),
+                  child: Column(
+                    children: [
+                      ProfileAvatar(),
+                      const SizedBox(height: 20),
+                      Text(
+                        profile.userName,
+                        style: TextStyle(color: Colors.white, fontSize: 24),
+                      ),
+                      Text(
+                        profile.userEmail,
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                      const SizedBox(height: 40),
+                      CustomButton(
+                        icon: Icons.settings,
+                        label: 'Account Settings',
+                        onPressed: () {},
+                      ),
+                      const SizedBox(height: 10),
+                      CustomButton(
+                        icon: Icons.public,
+                        label: 'Language',
+                        onPressed: () {},
+                      ),
+                      const SizedBox(height: 10),
+                      CustomButton(
+                        icon: Icons.policy,
+                        label: 'Privacy Policy',
+                        onPressed: () {
+                          Get.to(PrivacyPolicyPage());
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      CustomButton(
+                        icon: Icons.logout,
+                        label: 'Log Out',
+                        onPressed: () {
+                          localStorage.erase();
+                          Get.offAllNamed('/auth/login');
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                // User not logged in, display login message and button
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Login first',
+                        style: TextStyle(color: Colors.white, fontSize: 24),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.toNamed('/auth/login');
+                        },
+                        child: Text('Login'),
+                      ),
+                    ],
+                  ),
+                );
+              }
             } else {
               return Center(
                 child: CircularProgressIndicator(),

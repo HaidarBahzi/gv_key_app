@@ -9,7 +9,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:gv_key_app/app/models/CartModel.dart';
 import 'package:gv_key_app/app/models/ProductModel.dart';
 import 'package:gv_key_app/app/models/UserProfileModel.dart';
+import 'package:gv_key_app/app/pages/BottomNavigation.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 final localStorage = GetStorage();
 
@@ -37,19 +39,16 @@ class ActionController extends GetxController {
 
   loadDataCategory({required String category}) async {
     try {
-      Map body = {'email': localStorage.read('userEmail')};
-
       SmartDialog.showLoading();
 
-      final response = await http.post(
-          Uri.parse(
-              "https://knowing-fit-goose.ngrok-free.app/api/product/search/category=$category"),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ${localStorage.read('userToken')}',
-          },
-          body: jsonEncode(body));
+      final response = await http.get(
+        Uri.parse(
+            "https://knowing-fit-goose.ngrok-free.app/api/product/search/category=$category"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
 
       Future.delayed(Duration(seconds: 2), () => SmartDialog.dismiss());
 
@@ -70,19 +69,16 @@ class ActionController extends GetxController {
 
   loadDataName({required String name}) async {
     try {
-      Map body = {'email': localStorage.read('userEmail')};
-
       SmartDialog.showLoading();
 
-      final response = await http.post(
-          Uri.parse(
-              "https://knowing-fit-goose.ngrok-free.app/api/product/search/game_name=$name"),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ${localStorage.read('userToken')}',
-          },
-          body: jsonEncode(body));
+      final response = await http.get(
+        Uri.parse(
+            "https://knowing-fit-goose.ngrok-free.app/api/product/search/game_name=$name"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
 
       Future.delayed(Duration(seconds: 2), () => SmartDialog.dismiss());
 
@@ -101,19 +97,16 @@ class ActionController extends GetxController {
 
   loadDetailGame({required int app_id}) async {
     try {
-      Map body = {'email': localStorage.read('userEmail')};
-
       SmartDialog.showLoading();
 
-      final response = await http.post(
-          Uri.parse(
-              "https://knowing-fit-goose.ngrok-free.app/api/product/search/app_id=$app_id"),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ${localStorage.read('userToken')}',
-          },
-          body: jsonEncode(body));
+      final response = await http.get(
+        Uri.parse(
+            "https://knowing-fit-goose.ngrok-free.app/api/product/search/app_id=$app_id"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
 
       Future.delayed(Duration(seconds: 2), () => SmartDialog.dismiss());
 
@@ -132,7 +125,7 @@ class ActionController extends GetxController {
 
   addCartProduct({required int app_id}) async {
     try {
-      Map body = {'email': localStorage.read('userEmail')};
+      Map body = {"email": localStorage.read('userEmail')};
 
       SmartDialog.showLoading();
 
@@ -167,7 +160,7 @@ class ActionController extends GetxController {
 
   deleteCartProduct({required int cart_id}) async {
     try {
-      Map body = {'email': localStorage.read('userEmail')};
+      Map body = {"email": localStorage.read('userEmail')};
 
       SmartDialog.showLoading();
 
@@ -202,7 +195,7 @@ class ActionController extends GetxController {
 
   loadDataCart() async {
     try {
-      Map body = {'email': localStorage.read('userEmail')};
+      Map body = {"email": localStorage.read('userEmail')};
 
       SmartDialog.showLoading();
 
@@ -233,18 +226,16 @@ class ActionController extends GetxController {
 
   loadData() async {
     try {
-      Map body = {'email': localStorage.read('userEmail')};
-
       SmartDialog.showLoading();
 
-      final response = await http.post(
-          Uri.parse("https://knowing-fit-goose.ngrok-free.app/api/product"),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ${localStorage.read('userToken')}',
-          },
-          body: jsonEncode(body));
+      final response = await http.get(
+        Uri.parse("https://knowing-fit-goose.ngrok-free.app/api/product"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ${localStorage.read('userToken')}',
+        },
+      );
 
       Future.delayed(Duration(seconds: 2), () => SmartDialog.dismiss());
 
@@ -267,7 +258,7 @@ class ActionController extends GetxController {
 // Profile
   loadUserProfile() async {
     try {
-      Map body = {'email': localStorage.read('userEmail')};
+      Map body = {"email": localStorage.read('userEmail')};
 
       SmartDialog.showLoading();
 
@@ -290,6 +281,50 @@ class ActionController extends GetxController {
             response.statusCode.toString() +
             " gagal " +
             response.body);
+      }
+    } catch (e) {
+      print("error : " + e.toString());
+    }
+  }
+
+  RxString paymentMethod = "".obs;
+
+  DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+
+  buyProduct({required int app_id, required String method}) async {
+    try {
+      Map body = {
+        "email": localStorage.read('userEmail'),
+        "product": app_id,
+        "method": method,
+        "date": dateFormat.format(DateTime.now())
+      };
+
+      SmartDialog.showLoading();
+
+      final response = await http.post(
+          Uri.parse("https://knowing-fit-goose.ngrok-free.app/api/product/buy"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ${localStorage.read('userToken')}',
+          },
+          body: jsonEncode(body));
+
+      Future.delayed(Duration(seconds: 2), () => SmartDialog.dismiss());
+
+      if (response.statusCode == 200) {
+        final responseApi = jsonDecode(response.body);
+
+        SmartDialog.showToast(responseApi["message"]);
+
+        Get.to(BottomNavbar());
+      } else {
+        print("status code : " +
+            response.statusCode.toString() +
+            " gagal " +
+            response.body);
+        SmartDialog.showToast(response.body);
       }
     } catch (e) {
       print("error : " + e.toString());

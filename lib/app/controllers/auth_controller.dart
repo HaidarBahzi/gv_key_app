@@ -139,7 +139,7 @@ class AuthController extends GetxController {
         if (response.statusCode == 200) {
           Get.offAndToNamed('/bottom-navbar');
         } else {
-          Get.toNamed('/auth/login');
+          Get.offAndToNamed('/bottom-navbar');
         }
       } catch (e) {
         SmartDialog.showToast(e.toString());

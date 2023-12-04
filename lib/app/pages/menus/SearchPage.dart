@@ -9,20 +9,16 @@ class SearchPage extends StatelessWidget {
 
   final controller = Get.put(ActionController());
 
-  void performSearch() {
-    final searchText = controller.searchController.text;
-    if (searchText.isNotEmpty) {
-      controller.loadDataName(name: searchText);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SearchForm(controller.searchController),
+            SearchForm(
+                controller.searchController,
+                () => controller.loadDataName(
+                    name: controller.searchController.text)),
             Obx(
               () => ListView.builder(
                 shrinkWrap: true,
@@ -81,50 +77,44 @@ class SearchPage extends StatelessWidget {
   }
 
   Widget SearchForm(
-    TextEditingController searchController,
-  ) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: const Color(0xFF1B1B1B),
-              borderRadius: BorderRadius.circular(8.0),
-              border: Border.all(color: Colors.white.withOpacity(0.5)),
-            ),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                ),
-                Expanded(
-                  child: TextFormField(
-                    controller: searchController,
-                    style: TextStyle(color: Colors.white.withOpacity(0.75)),
-                    decoration: InputDecoration(
-                      hintText: 'Search',
-                      hintStyle:
-                          TextStyle(color: Colors.white.withOpacity(0.75)),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                    onPressed: performSearch,
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.transparent,
-                      elevation: 0,
-                    ),
-                    child: Icon(
-                      Icons.search,
-                      color: Colors.white.withOpacity(0.75),
-                    )),
-              ],
-            ),
-          ),
+      TextEditingController searchController, void Function()? o2nPressed) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFF1B1B1B),
+          borderRadius: BorderRadius.circular(8.0),
+          border: Border.all(color: Colors.white.withOpacity(0.5)),
         ),
-      ],
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+            ),
+            Expanded(
+              child: TextFormField(
+                controller: searchController,
+                style: TextStyle(color: Colors.white.withOpacity(0.75)),
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.75)),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            ElevatedButton(
+                onPressed: o2nPressed,
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.transparent,
+                  elevation: 0,
+                ),
+                child: Icon(
+                  Icons.search,
+                  color: Colors.white.withOpacity(0.75),
+                )),
+          ],
+        ),
+      ),
     );
   }
 }
