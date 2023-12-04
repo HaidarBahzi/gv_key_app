@@ -21,16 +21,6 @@ class BottomNavbar extends StatelessWidget {
                 'assets/logo2.png',
                 width: 100,
               ),
-              IconButton(
-                icon: const Icon(
-                  Icons.settings,
-                  color: Colors.white,
-                ),
-                iconSize: 30,
-                onPressed: () {
-                  // Aksi yang ingin Anda jalankan ketika hamburger (menu) ditekan
-                },
-              ),
             ],
           ),
           bottom: PreferredSize(

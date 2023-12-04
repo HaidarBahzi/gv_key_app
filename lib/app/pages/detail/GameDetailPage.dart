@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:gv_key_app/app/components/auth_widgets.dart';
 import 'package:gv_key_app/app/controllers/action_controller.dart';
+import 'package:gv_key_app/app/pages/detail/CheckoutDetailPage.dart';
 import 'package:intl/intl.dart';
 
 class GameDetailPage extends StatelessWidget {
@@ -12,6 +16,8 @@ class GameDetailPage extends StatelessWidget {
   NumberFormat format = NumberFormat('#,###', 'id_ID');
 
   final controller = Get.put(ActionController());
+
+  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +125,13 @@ class GameDetailPage extends StatelessWidget {
                   padding: EdgeInsets.only(left: 10, right: 10),
                   child: ElevatedButton(
                     onPressed: () {
-                      // Buy Now logic here
+                      if (box.read('userEmail') == null) {
+                        Get.toNamed('/auth/login');
+                      } else {
+                        Get.to(ConfirmPaymentPage(
+                          app_id: app_id,
+                        ));
+                      }
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.white),
